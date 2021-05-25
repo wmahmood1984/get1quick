@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+For testing on Ropsten
+var token_address = '0x7a363f7545cccb6eef863483873998e927829cda';
+var faucet_address = '0xf11460CC6F049faD20fE0D7Dd00E04d822a84D8F';
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+faucet.sol
 
-In the project directory, you can run:
+pragma solidity ^0.5.1;
 
-### `yarn start`
+interface ERC20 {
+function transfer(address to, uint256 value) external returns (bool);
+event Transfer(address indexed from, address indexed to, uint256 value);
+}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+contract Faucet {
+uint256 constant public tokenAmount = 1000000000000000000;
+uint256 constant public waitTime = 36000 minutes;
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+ERC20 public tokenInstance;
 
-### `yarn test`
+mapping(address => uint256) lastAccessTime;
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+constructor(address _tokenInstance) public {
+require(_tokenInstance != address(0));
+tokenInstance = ERC20(_tokenInstance);
+}
 
-### `yarn build`
+function requestTokens() public {
+require(allowedToWithdraw(msg.sender));
+tokenInstance.transfer(msg.sender, tokenAmount);
+lastAccessTime[msg.sender] = block.timestamp + waitTime;
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+function allowedToWithdraw(address _address) public view returns (bool) {
+if(lastAccessTime[_address] == 0) {
+return true;
+} else if(block.timestamp >= lastAccessTime[_address]) {
+return true;
+}
+return false;
+}
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+SITE key  6Le-JOsaAAAAAOTq9odTJC8UsWk3ZldAxZkWjgN9
+6LeYJ-saAAAAAB5u6FJZqMSeWgdCIZJB9-medWeL
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Secret key 6Le-JOsaAAAAABO4nciNx2fzKyyiXWQYLnTHIWfT
+6LeYJ-saAAAAAC0wybUFIltIa7ockwXsZ7l_7TH1
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
