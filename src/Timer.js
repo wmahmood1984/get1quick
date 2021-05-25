@@ -26,7 +26,7 @@ export default function Timer(props) {
     return (
 
             <div>
-            {stakeTime != 0 ? <div>
+            {stakeTime !== 0 ? <div>
             <span className="custom">{DaysRemaining} Days     </span>
             <span>{HoursRemaining} Hours     </span>
             <span>{MinutesRemaining} Minutes     </span>

@@ -1,9 +1,9 @@
-import React,{useState, useEffect} from 'react';
+import React,{useEffect} from 'react';
 import './App.css'
 //import Main from "./components/Main/Main";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { initWeb3,faucetCall,balanceOfYearly } from './store/adoptSlice';
-import ReCaptchaV2 from 'react-google-recaptcha'
+
 import Timer from './Timer'
 // import { isBot, useProgressiveImage } from "./helpers";
 //import axios from 'axios'
@@ -13,7 +13,7 @@ function App() {
   
   
 //  const loading = !headerImage || !footerImage || !middleImage;
-  const [price, setPrice] = useState()
+
   
   const dispatch = useDispatch()
   
@@ -68,7 +68,7 @@ const address = useSelector((state)=>{
      }, 1000);
     
      return()=>{}
-    
+  // eslint-disable-next-line  
   }, [toggle,address])
 
   const setfaucetCall = (e)=>{
@@ -90,7 +90,7 @@ function numberWithCommas(x) {
 		<p id="intro">Welcome to the simple faucet, a minimalistic ERC20-token faucet for Ethereum. Developing dApps or smart contracts requires you to test what you have built. 
 		Since begging for tokens face-to-face is outdated, this faucet offers a very easy smart contract based solution. 
 		Just click the button below and you will receive some test tokens. The only thing that you need is Metamask.</p>
-		{networkId !=3?<div id="wrong_network">It seems that you are <strong>not connected to the testnet</strong>. Please switch to it via Metamask. If you haven't added the testnet already, follow these simple steps:
+		{networkId !==3?<div id="wrong_network">It seems that you are <strong>not connected to the testnet</strong>. Please switch to it via Metamask. If you haven't added the testnet already, follow these simple steps:
 		<ol>
 			<li>Open and unlock your Metamask</li>
 			<li>Click on the network selector at the top</li>
